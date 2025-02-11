@@ -1,4 +1,5 @@
 ---
+import LinkPersonne from "@components/LinkPersonne.astro";
 import Layout from "@layouts/Layout.astro";
 import { getEntry, getEntries, getCollection, render } from "astro:content";
 import { formatDate } from "src/helpers";
@@ -33,27 +34,37 @@ const roles =
 <Layout pageTitle={`Fiche du film ${film.data.titre}`}>
   <h1>{film.data.titre}</h1>
   <p>Date de sortie : {formatDate(film.data.dateSortie)}</p>
-  {realisateur && <p>Réalisateur : {realisateur.data.nom}</p>}
+  {
+    realisateur && (
+      <p>
+        Réalisateur <LinkPersonne personne={realisateur} />
+      </p>
+    )
+  }
   {
     scenaristes && (
       <p>
-        Scénariste{scenaristes.length > 1 && <>s</>} :
-        {scenaristes
-          .map((s) => s.data.nom)
-          .join(", ")
-          .replace(/, ([^,]*)$/, " et $1")}
+        Scénariste{scenaristes.length > 1 && <>s</>}
+        {scenaristes.map((s) => (
+          <LinkPersonne personne={s} />
+        ))}
       </p>
     )
   }
 
   {
-    roles &&(
+    roles && (
       <>
         <h2>Acteurs</h2>
         <ul>
           {roles.map(({ role, acteur }) => (
             <li>
-              <strong>{role}</strong> : {acteur.data.nom}
+              <strong>{role}</strong>{" "}
+              {acteur && (
+                <>
+                  : <a href={`/personnes/${acteur.id}`}>{acteur.data.nom}</a>
+                </>
+              )}
             </li>
           ))}
         </ul>
