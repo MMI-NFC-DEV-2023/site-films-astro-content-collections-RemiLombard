@@ -1,5 +1,6 @@
 ---
 import Layout from "@layouts/Layout.astro";
+import { getEntry } from "astro:content";
 import { getCollection, render } from "astro:content";
 import { formatDate } from "src/helpers";
 // 1. Génére un nouveau chemin pour chaque entrée de collection
@@ -13,12 +14,15 @@ export async function getStaticPaths() {
 // 2. Pour votre modèle, vous pouvez obtenir l'entrée directement à partir de la propriété
 const { film } = Astro.props;
 const { Content } = await render(film);
+
+const realisateur =
+  film.data.realisateur && (await getEntry(film.data.realisateur));
 ---
 
 <Layout pageTitle={`Fiche du film ${film.data.titre}`}>
   <h1>{film.data.titre}</h1>
   <p>Date de sortie : {formatDate(film.data.dateSortie)}</p>
-
+  {realisateur && <p>Réalisateur : {realisateur.data.nom}</p>}
   <div class="prose">
     <Content />
   </div>
