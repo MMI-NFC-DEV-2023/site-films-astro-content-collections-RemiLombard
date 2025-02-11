@@ -7,6 +7,7 @@ nationalite: US
 profession:
   - acteur
   - réalisateur
+  - scénariste
 ---
 
 # Biographie de Mel Gibson
