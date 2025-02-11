@@ -22,9 +22,9 @@ const films = defineCollection({
     dateSortie: z.date(),
     realisateur: reference("personnes").optional(),
     scenaristes: z.array(reference("personnes")).optional(),
-    roles: z.array(
-      z.object({ acteur: reference("personnes"), role: z.string() })
-    ),
+    roles: z
+      .array(z.object({ acteur: reference("personnes"), role: z.string() }))
+      .optional(),
   }),
 });
 
