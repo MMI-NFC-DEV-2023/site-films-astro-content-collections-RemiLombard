@@ -10,6 +10,6 @@ profession:
 
 # Biographie de Natalie Portman
 
-- actrice
+- acteur
 - réalisatrice
 - productrice
