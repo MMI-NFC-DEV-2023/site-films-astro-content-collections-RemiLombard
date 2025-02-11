@@ -9,6 +9,9 @@ const personnes = defineCollection({
     dateNaissance: z.date(),
     dateDeces: z.date().optional(),
     nationalite: z.string(),
+    profession: z
+      .array(z.enum(["acteur", "réalisateur", "scénariste", "producteur"]))
+      .optional(),
   }),
 });
 
