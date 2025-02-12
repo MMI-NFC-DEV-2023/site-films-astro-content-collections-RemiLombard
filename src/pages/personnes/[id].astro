@@ -1,7 +1,9 @@
 ---
+import LinkFilm from "@components/LinkFilm.astro";
 import Layout from "@layouts/Layout.astro";
 import { getCollection, render } from "astro:content";
 import { formatDate } from "src/helpers";
+
 // 1. Génére un nouveau chemin pour chaque entrée de collection
 export async function getStaticPaths() {
   const personnes = await getCollection("personnes");
@@ -10,6 +12,7 @@ export async function getStaticPaths() {
     props: { personne },
   }));
 }
+
 // 2. Pour votre modèle, vous pouvez obtenir l'entrée directement à partir de la propriété
 const { personne } = Astro.props;
 const { Content } = await render(personne);
@@ -17,6 +20,10 @@ const { Content } = await render(personne);
 const profession = personne.data.profession && [
   ...new Set(personne.data.profession),
 ];
+
+const filmsRealises = [...(await getCollection("films"))].filter(
+  (film) => film.data?.realisateur?.id === personne.id
+);
 ---
 
 <Layout pageTitle={`Fiche de ${personne.data.nom}`}>
@@ -32,8 +39,19 @@ const profession = personne.data.profession && [
   {
     profession && (
       <p>
-        Profession{profession.length > 1 && <>s</>} : {profession.join(", ").replace(/, ([^,]*)$/, ' et $1')}
+        Profession{profession.length > 1 && <>s</>} :{" "}
+        {profession.join(", ").replace(/, ([^,]*)$/, " et $1")}
       </p>
+    )
+  }
+  {
+    filmsRealises.length > 0 && (
+      <>
+        <h2>Films réalisés</h2>
+          {filmsRealises.map((film) => (
+            <LinkFilm {...film}/>
+          ))}
+      </>
     )
   }
   <div class="prose">
