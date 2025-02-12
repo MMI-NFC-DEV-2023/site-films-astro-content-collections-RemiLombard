@@ -6,4 +6,4 @@ type Props = CollectionEntry<"films">;
 const film = Astro.props;
 ---
 
-<a href={`/films/${film.id}`}>{film.data.titre}</a>
+<a href={`/films/${film.id}`} class="text-blue-700 hover:underline">{film.data.titre}</a>
